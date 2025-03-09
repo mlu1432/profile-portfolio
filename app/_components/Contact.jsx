@@ -1,8 +1,20 @@
 /** Contact Component  
- *  Description: This section contains a contact form allowing users to send messages via EmailJS.
+ * * @component Contact
+ * @description Handles user contact form submissions and displays social media links
+ * @prop {ReactNode} children - No children props accepted (form container)
+ * 
+ * @features
+ * - EmailJS integration for form handling
+ * - Client-side form validation
+ * - Real-time form state management
+ * - Error handling with user feedback
+ * - Social media links with animated icons 
+ * 
  */
 
+"use client";
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import RevealOnScroll from "../_components/RevealOnScroll";
 import emailjs from "@emailjs/browser";
 
@@ -19,14 +31,6 @@ const Contact = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    /* Debugging (Only in development mode) */
-    if (process.env.NODE_ENV === "development") {
-        console.log("SERVICE_ID:", SERVICE_ID);
-        console.log("TEMPLATE_ID:", TEMPLATE_ID);
-        console.log("PUBLIC_KEY:", PUBLIC_KEY);
-    }
-
-    /** Handle input changes */
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -37,29 +41,20 @@ const Contact = () => {
 
         if (!formRef.current) return;
 
-        console.log("Sending EmailJS Request...");
-        console.log("SERVICE_ID:", SERVICE_ID);
-        console.log("TEMPLATE_ID:", TEMPLATE_ID);
-        console.log("PUBLIC_KEY:", PUBLIC_KEY);
-
-        /** Send form data using EmailJS */
         emailjs
             .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
             .then((result) => {
-                console.log("✅ Email sent successfully:", result);
                 alert("Message sent successfully!");
                 setFormData({ name: "", email: "", message: "" });
             })
             .catch((error) => {
-                console.error("❌ EmailJS Error:", error);
-                alert("Oops! Something went wrong. Please check the console for details.");
+                console.error("EmailJS Error:", error);
+                alert("Oops! Something went wrong. Please try again later.");
             });
     };
 
     return (
-        /** Contact Section */
         <section id="contact">
-
             <div className="relative top-[260px] w-full h-[550px] bg-light-blue flex flex-col justify-center items-center 
                 shadow-[inset_0px_1px_3px_rgba(0,0,0,0.12),_0px_2px_4px_rgba(0,0,0,0.08)]">
                 <RevealOnScroll>
@@ -105,6 +100,43 @@ const Contact = () => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+
+                    {/* Social Media Buttons */}
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-3 mt-4">
+                        <a
+                            href="https://www.linkedin.com/in/lucas-sekwati-723029bb"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-1"
+                        >
+                            <div className="w-9 h-9 relative hover:scale-110 transition-transform">
+                                <Image
+                                    src="/linkedin.svg"
+                                    alt="LinkedIn"
+                                    fill
+                                    sizes="24px"
+                                    className="object-contain"
+                                />
+                            </div>
+                        </a>
+
+                        <a
+                            href="https://github.com/mlu1432?tab=repositories"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-1"
+                        >
+                            <div className="w-9 h-9 relative hover:scale-110 transition-transform">
+                                <Image
+                                    src="/github.svg"
+                                    alt="GitHub"
+                                    fill
+                                    sizes="24px"
+                                    className="object-contain"
+                                />
+                            </div>
+                        </a>
                     </div>
                 </RevealOnScroll>
             </div>

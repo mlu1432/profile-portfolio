@@ -1,29 +1,18 @@
-/**
- * Next.js Configuration for Performance & Deployment
- * - Enables strict mode for better debugging
- * - Supports remote images with proper security
- * - Optimized for serverless deployment
+/** 
+ * Next.js Configuration for Netlify Deployment
+ * - Static export configuration
+ * - Image optimization disabled for static exports
+ * - Strict mode enabled for React
  */
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-
+  trailingSlash: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-        ba
-      },
-    ],
+    unoptimized: true,
   },
-
-  compiler: {
-    styledComponents: true,
-  },
-
-  output: "standalone",
+  output: "export",
 };
 
 export default nextConfig;

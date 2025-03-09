@@ -2,15 +2,11 @@
  * Projects.jsx
  * @description 
  * This component renders a list of projects with details such as title, description, features, 
- * tech stack, images, and links to GitHub and design tools. It uses React, Next.js, Framer Motion, 
- * and Tailwind CSS for smooth animations and responsive design. 
- * The project cards are animated as they appear in the viewport, and dark mode is supported. 
- * It also includes fallback images for better UX.
+ * tech stack, images, and links to GitHub and design tools.
  */
 
 "use client";
-
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import RevealOnScroll from "../_components/RevealOnScroll";
@@ -50,81 +46,78 @@ const projects = [
   },
 ];
 
-const ProjectCard = ({ project, index }) => (
-  <RevealOnScroll key={index}>
-    <motion.div
-      className="bg-white dark:bg-darkTheme dark:text-tnb-text shadow-lg rounded-lg overflow-hidden p-6 flex flex-col 
+const ProjectCard = ({ project, index }) => {
+  const [imgSrc, setImgSrc] = useState(project.images[0]);
+
+  return (
+    <RevealOnScroll key={index}>
+      <motion.div
+        className="bg-white dark:bg-darkTheme dark:text-tnb-text shadow-lg rounded-lg overflow-hidden p-6 flex flex-col 
                  border border-gray-300 dark:border-tnb-keywords hover:shadow-xl transition-all"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.2 }}
-    >
-      {/* Project Title */}
-      <h3 className="text-2xl font-semibold text-center text-primary-blue dark:text-tnb-keywords mb-4">
-        {project.title}
-      </h3>
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.2 }}
+      >
+        <h3 className="text-2xl font-semibold text-center text-primary-blue dark:text-tnb-keywords mb-4">
+          {project.title}
+        </h3>
 
-      {/* Image Display */}
-      <div className="relative w-full h-64 mb-4">
-        <Image
-          src={project.images[0]}
-          alt={project.title}
-          fill
-          objectFit="cover"
-          className="rounded-lg"
-          priority={index === 0}
-          onError={(e) => {
-            e.target.src = "/assets/fallback-image.png";
-          }}
-        />
-      </div>
+        <div className="relative w-full h-64 mb-4">
+          <Image
+            src={imgSrc}
+            alt={project.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: 'cover' }}
+            className="rounded-lg"
+            priority={index === 0}
+            onError={() => setImgSrc("/assets/fallback-image.png")}
+          />
+        </div>
 
-      {/* Project Description */}
-      <p className="text-gray-600 dark:text-tnb-text text-lg mb-4">{project.description}</p>
+        <p className="text-gray-600 dark:text-tnb-text text-lg mb-4">{project.description}</p>
 
-      {/* Features */}
-      <ul className="text-gray-700 dark:text-tnb-text text-sm list-disc list-inside mb-4">
-        {project.features.map((feature, i) => (
-          <li key={i}>✅ {feature}</li>
-        ))}
-      </ul>
+        <ul className="text-gray-700 dark:text-tnb-text text-sm list-disc list-inside mb-4">
+          {project.features.map((feature, i) => (
+            <li key={i}>✅ {feature}</li>
+          ))}
+        </ul>
 
-      {/* Tech Stack Badges */}
-      <div className="flex flex-wrap gap-2 mt-auto mb-4">
-        {project.techStack.map((tech, i) => (
-          <span
-            key={i}
-            className="bg-blue-100 dark:bg-tnb-keywords dark:text-darkTheme text-blue-600 text-xs font-semibold px-3 py-1 rounded-full shadow-sm"
+        <div className="flex flex-wrap gap-2 mt-auto mb-4">
+          {project.techStack.map((tech, i) => (
+            <span
+              key={i}
+              className="bg-blue-100 dark:bg-tnb-keywords dark:text-darkTheme text-blue-600 text-xs font-semibold px-3 py-1 rounded-full shadow-sm"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex gap-4 mt-4">
+          <a
+            href={project.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 text-center bg-[#3B82F6] dark:bg-tnb-keywords text-white px-4 py-2 rounded-lg hover:bg-[#2563EB] 
+                       dark:hover:bg-[#BBDAFF] transition-colors shadow-md"
           >
-            {tech}
-          </span>
-        ))}
-      </div>
-
-      {/* Buttons for Links */}
-      <div className="flex gap-4 mt-4">
-        <a
-          href={project.links.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 text-center bg-[#3B82F6] dark:bg-tnb-keywords text-white px-4 py-2 rounded-lg hover:bg-[#2563EB] 
-                     dark:hover:bg-[#BBDAFF] transition-colors shadow-md"
-        >
-          GitHub Repo
-        </a>
-        <a
-          href={project.links.designTool}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 text-center bg-[#3B82F6] dark:bg-tnb-keywords text-white px-4 py-2 rounded-lg hover:bg-[#2563EB] 
-                     dark:hover:bg-[#BBDAFF] transition-colors shadow-md"
-        >
-          {project.title.includes("SentinelShield") ? "Figma Design" : "Adobe XD Design"}
-        </a>
-      </div>
-    </motion.div>
-  </RevealOnScroll>
-);
+            GitHub Repo
+          </a>
+          <a
+            href={project.links.designTool}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 text-center bg-[#3B82F6] dark:bg-tnb-keywords text-white px-4 py-2 rounded-lg hover:bg-[#2563EB] 
+                       dark:hover:bg-[#BBDAFF] transition-colors shadow-md"
+          >
+            {project.title.includes("SentinelShield") ? "Figma Design" : "Adobe XD Design"}
+          </a>
+        </div>
+      </motion.div>
+    </RevealOnScroll>
+  );
+};
 
 const Projects = () => {
   return (
