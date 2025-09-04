@@ -8,8 +8,8 @@
  */
 
 import "./globals.css";
-import { GalaxyScrollProvider } from "@/_components/GalaxyScrollProvider";
-import CosmicNavbar from "@/_components/CosmicNavbar";
+import { GalaxyScrollProvider } from "./_components/GalaxyScrollProvider";
+import CosmicNavbar from "./_components/cosmicNavbar";
 
 export const metadata = {
   title: "Portfolio - Lucas Sekwati",
