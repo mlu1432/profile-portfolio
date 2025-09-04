@@ -10,8 +10,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Loading from "./_components/Loading";
-import Navbar from "./_components/Navbar";
-import Header from "./_components/Header";
+import Header from "./_components/Header.jsx";
 import About from "./_components/About";
 import Skills from "./_components/Skills";
 import Projects from "./_components/Projects";
@@ -35,7 +34,6 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
       <Header />
       <About />
       <Skills />
